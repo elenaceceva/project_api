@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   apipie
   devise_for :users
-
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
   root 'base#index'
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)

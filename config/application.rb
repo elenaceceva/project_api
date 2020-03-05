@@ -35,5 +35,6 @@ module ProjectApi
     config.middleware.use ActionDispatch::Session::CookieStore
     config.api_only = true
     config.app_generators.scaffold_controller = :scaffold_controller
+    config.active_job.queue_adapter = :sidekiq
   end
 end
