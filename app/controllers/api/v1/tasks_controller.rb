@@ -1,8 +1,7 @@
 
-module Api
-  module V1
-    class TasksController < Api::V1::BaseController
-      before_action :set_task, only: [:show, :update, :destroy]
+  class Api::V1::TasksController < BaseController
+      before_action :set_task, only: [ :update, :destroy]
+      skip_before_action :verify_authenticity_token
 
       def_param_group :task do
         param :task, Hash, :desc => "Task info" do
@@ -11,16 +10,22 @@ module Api
           param :state, Integer, :desc => "State for task"
         end
       end
-
+      api :GET, "/api/v1/users/:user_id/tasks", "Show all tasks "
+      returns :array_of => :task, :code => 200, :desc => "All tasks"
       def index
-        @tasks = Task.all
-        authorize @tasks
+        @user = User.find(params[:user_id])
+        @tasks = @user.tasks
         render json: @tasks
       end
 
       # GET /tasks/1
-      api :GET, "/tasks/:id", "Show task "
+      api :GET, "/api/v1/users/:user_id/tasks/:id", "Show task "
+      returns :code => 200, :desc => "Detailed info about the tasks" do
+        param_group :task
+        property :name, String, :desc => "Name of a task"
+      end
       def show
+        @task = policy_scope(Task).find(params[:id])
         render json: @task
       end
 
@@ -30,8 +35,9 @@ module Api
       end
 
       # POST /tasks
-      api :POST, "/tasks", "Create task "
+      api :POST, "/api/v1/users", "Create task "
       param_group :task
+      returns :code => 201, :desc => "Create task"
       def create
         @task = @task.new(task_params)
         @task.user = current_user
@@ -44,7 +50,7 @@ module Api
       end
 
       # PATCH/PUT /tasks/1
-      api :PUT, "/tasks/:id", "Update a task"
+      api :PUT, "/api/v1/users/:id", "Update a task"
       param_group :task
       def update
         if @task.update(task_params)
@@ -55,6 +61,8 @@ module Api
       end
 
       # DELETE /tasks/1
+      api :DELETE, "/api/v1/users/:user_id/tasks/:id", "Delete a task"
+      returns :code => 200, :desc => "Delete task"
       def destroy
         @task.destroy
       end
@@ -71,5 +79,4 @@ module Api
         params.require(:task).permit(:user_id, :name, :content, :state)
       end
     end
-  end
-end
+
