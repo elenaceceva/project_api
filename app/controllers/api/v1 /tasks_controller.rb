@@ -1,7 +1,7 @@
 
-module API
+module Api
   module V1
-    class TasksController < API::V1::BaseController
+    class TasksController < Api::V1::BaseController
       before_action :set_task, only: [:show, :update, :destroy]
 
       def_param_group :task do
