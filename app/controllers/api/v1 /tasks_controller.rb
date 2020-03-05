@@ -14,6 +14,7 @@ module API
 
       def index
         @tasks = Task.all
+        authorize @tasks
         render json: @tasks
       end
 
@@ -24,13 +25,17 @@ module API
       end
 
       def new
-
+        @task = Task.new
+        authorize @task
       end
+
       # POST /tasks
       api :POST, "/tasks", "Create task "
       param_group :task
       def create
         @task = @task.new(task_params)
+        @task.user = current_user
+        authorize @task
         if @task.save
           render json: @task, status: :created, location: @task
         else
@@ -58,6 +63,7 @@ module API
       # Use callbacks to share common setup or constraints between actions.
       def set_task
         @task = Task.find(params[:id])
+        authorize @task
       end
 
       # Only allow a trusted parameter "white list" through.
