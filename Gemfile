@@ -31,6 +31,8 @@ gem 'apipie-rails'
 gem "pundit"
 gem 'sidekiq'
 gem 'faker'
+gem 'doorkeeper'
+gem 'kaminari'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

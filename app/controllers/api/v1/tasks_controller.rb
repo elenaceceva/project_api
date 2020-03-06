@@ -1,7 +1,6 @@
 
   class Api::V1::TasksController < BaseController
       before_action :set_task, only: [ :update, :destroy]
-      skip_before_action :verify_authenticity_token
 
       def_param_group :task do
         param :task, Hash, :desc => "Task info" do

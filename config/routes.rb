@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  use_doorkeeper
+
   apipie
   devise_for :users
   require 'sidekiq/web'

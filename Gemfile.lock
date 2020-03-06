@@ -78,6 +78,8 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    doorkeeper (5.3.1)
+      railties (>= 5)
     erubi (1.9.0)
     execjs (2.7.0)
     faker (2.10.2)
@@ -229,7 +231,9 @@ DEPENDENCIES
   apipie-rails
   byebug
   devise
+  doorkeeper
   faker
+  kaminari
   listen (>= 3.0.5, < 3.2)
   pg
   puma (~> 3.7)
