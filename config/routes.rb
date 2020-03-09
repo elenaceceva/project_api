@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   devise_for :users
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
-  root 'base#index'
+  root 'api/v1/tasks#index'
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   namespace :api do
@@ -15,5 +15,6 @@ Rails.application.routes.draw do
       end
     end
   end
+  resources :tasks, only: [:index]
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

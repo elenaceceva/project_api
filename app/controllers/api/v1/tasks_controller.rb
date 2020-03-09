@@ -12,9 +12,16 @@
       api :GET, "/api/v1/users/:user_id/tasks", "Show all tasks "
       returns :array_of => :task, :code => 200, :desc => "All tasks"
       def index
-        @user = User.find(params[:user_id])
-        @tasks = @user.tasks
-        render json: @tasks
+        if(params.has_key? "user_id")
+         @user = User.find(params[:user_id])
+         @tasks = @user.tasks
+          render json: @tasks
+        else
+          @tasks = Task.all
+          render json: { status: 'SUCCESS', messsage:'Loaded posts', data: @tasks }
+        end
+
+
       end
 
       # GET /tasks/1
